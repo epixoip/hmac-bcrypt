@@ -15,7 +15,7 @@ use constant BCRYPT_COST       => 13;
 use constant BCRYPT_SALT_BYTES => 16;
 use constant BCRYPT_PEPPER     => 'hmac_bcrypt';
 
-sub hmac_bcrypt_new {
+sub hmac_bcrypt_hash {
     # generates a new hash from a plaintext password
     #
     # @param password: scalar containing plaintext password
@@ -51,7 +51,7 @@ sub hmac_bcrypt_new {
     return $settings . $post_hash;
 }
 
-sub hmac_bcrypt_compare {
+sub hmac_bcrypt_verify {
     # compares password to stored hash value
     #
     # @param password: scalar containing plaintext password
@@ -61,7 +61,7 @@ sub hmac_bcrypt_compare {
 
     my ($password, $valid, $pepper) = @_;
 
-    my $hash = hmac_bcrypt_new($password, $valid, $pepper);
+    my $hash = hmac_bcrypt_hash($password, $valid, $pepper);
     return equals($hash, $valid);
 }
 
@@ -69,9 +69,9 @@ INIT {
     my $pass   = 'test-password';
     my $pepper = 'test-pepper';
     
-    my $hash = hmac_bcrypt_new($pass, undef, $pepper);
+    my $hash = hmac_bcrypt_hash($pass, undef, $pepper);
     
-    unless (hmac_bcrypt_compare($pass, $hash, $pepper)) {
+    unless (hmac_bcrypt_verify($pass, $hash, $pepper)) {
         die "HMAC_Bcrypt module failed sanity check!";
     }
 }
