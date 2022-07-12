@@ -15,14 +15,16 @@ use constant BCRYPT_COST       => 13;
 use constant BCRYPT_SALT_BYTES => 16;
 use constant BCRYPT_PEPPER     => 'hmac_bcrypt';
 
-sub hmac_bcrypt_hash {
-    # generates a new hash from a plaintext password
-    #
-    # @param password: scalar containing plaintext password
-    # @param settings: scalar containing settings string or undef
-    # @param pepper: scalar containing pepper string or undef
-    # @returns hashed password or croak
+##
+# Generates a new hash from a plaintext password
+#
+# @param password  scalar containing plaintext password
+# @param settings  scalar containing settings string or undef
+# @param pepper    scalar containing pepper string or undef
+# @returns         scalar containing hashed password
+##
 
+sub hmac_bcrypt_hash {
     my ($password, $settings, $pepper) = @_;
     my ($cost, $salt);
 
@@ -51,14 +53,16 @@ sub hmac_bcrypt_hash {
     return $settings . $post_hash;
 }
 
-sub hmac_bcrypt_verify {
-    # compares password to stored hash value
-    #
-    # @param password: scalar containing plaintext password
-    # @param valid: scalar containing stored hash value
-    # @param pepper: scalar containing pepper string or undef
-    # @returns boolean
+##
+# Compares password to stored hash value
+#
+# @param password   scalar containing plaintext password
+# @param valid      scalar containing stored hash value
+# @param pepper     scalar containing pepper string or undef
+# @returns          boolean
+##
 
+sub hmac_bcrypt_verify {
     my ($password, $valid, $pepper) = @_;
 
     my $hash = hmac_bcrypt_hash($password, $valid, $pepper);
