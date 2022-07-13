@@ -5,15 +5,15 @@ use warnings;
 
 use Exporter::Auto;
 
-use Crypt::Eksblowfish::Bcrypt qw(bcrypt en_base64);
+use Crypt::Eksblowfish::Bcrypt    qw(bcrypt en_base64);
 use String::Compare::ConstantTime qw(equals);
-use Digest::SHA qw(hmac_sha512_base64);
-use Crypt::URandom qw(urandom);
+use Digest::SHA                   qw(hmac_sha512_base64);
+use Crypt::URandom                qw(urandom);
 
-use constant BCRYPT_ID         => '2a';
-use constant BCRYPT_COST       => 13;
-use constant BCRYPT_SALT_BYTES => 16;
-use constant BCRYPT_PEPPER     => 'hmac_bcrypt';
+use constant BCRYPT_ID            => '2a';
+use constant BCRYPT_COST          => 13;
+use constant BCRYPT_SALT_BYTES    => 16;
+use constant BCRYPT_PEPPER        => 'hmac_bcrypt';
 
 ##
 # Generates a new hash from a plaintext password
