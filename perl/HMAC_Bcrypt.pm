@@ -23,12 +23,11 @@ use constant BCRYPT_PEPPER     => 'hmac_bcrypt';
 # @param pepper    scalar containing pepper string or undef
 # @returns         scalar containing hashed password
 ##
-
 sub hmac_bcrypt_hash {
     my ($password, $settings, $pepper) = @_;
     my ($cost, $salt);
 
-    if ($settings) {
+    if (length $settings) {
         (undef, undef, $cost, $salt) = split /\$/, $settings;
     }
 
@@ -42,6 +41,10 @@ sub hmac_bcrypt_hash {
         );
     } else {
         $salt = substr($salt, 0, 22);
+    }
+
+    unless (length $pepper) {
+        $pepper = BCRYPT_PEPPER;
     }
 
     $settings = sprintf('$%2s$%02d$%s', BCRYPT_ID, $cost, $salt);
@@ -61,7 +64,6 @@ sub hmac_bcrypt_hash {
 # @param pepper     scalar containing pepper string or undef
 # @returns          boolean
 ##
-
 sub hmac_bcrypt_verify {
     my ($password, $valid, $pepper) = @_;
 
