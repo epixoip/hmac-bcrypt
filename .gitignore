@@ -1,4 +1,5 @@
-/kotlin/.idea/
-/kotlin/build/
-/kotlin/gradle/
-/kotlin/.gradle/
+*/.idea/
+*/build/
+*/gradle/
+*/.gradle/
+*.iml
