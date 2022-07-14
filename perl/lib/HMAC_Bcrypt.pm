@@ -29,18 +29,17 @@ sub hmac_bcrypt_hash {
 
     if (length $settings) {
         (undef, undef, $cost, $salt) = split /\$/, $settings;
+        $salt = substr($salt, 0, 22);
     }
 
     unless (length $cost) {
         $cost = BCRYPT_COST;
     }
 
-    unless (length $salt && length $salt >= 22) {
+    unless (length $salt) {
         $salt = en_base64(
             urandom(BCRYPT_SALT_BYTES)
         );
-    } else {
-        $salt = substr($salt, 0, 22);
     }
 
     unless (length $pepper) {
