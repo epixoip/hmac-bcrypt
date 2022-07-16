@@ -5,10 +5,10 @@ use warnings;
 
 use Exporter::Auto;
 
-use Crypt::Eksblowfish::Bcrypt    qw(bcrypt en_base64);
-use String::Compare::ConstantTime qw(equals);
 use Digest::SHA                   qw(hmac_sha512_base64);
+use Crypt::Eksblowfish::Bcrypt    qw(bcrypt en_base64);
 use Crypt::URandom                qw(urandom);
+use String::Compare::ConstantTime qw(equals);
 
 use constant BCRYPT_ID            => '2a';
 use constant BCRYPT_COST          => 13;
@@ -18,10 +18,11 @@ use constant BCRYPT_PEPPER        => 'hmac_bcrypt';
 ##
 # Generates a new hash from a plaintext password
 #
-# @param password  scalar containing plaintext password
-# @param settings  scalar containing settings string or undef
-# @param pepper    scalar containing pepper string or undef
-# @returns         scalar containing hashed password
+# @param scalar password    plaintext password
+# @param scalar settings    optional settings string (id + cost + salt)
+# @param scalar pepper      optional pepper string
+# @returns scalar           final hashed value
+# @throws croak
 ##
 sub hmac_bcrypt_hash {
     my ($password, $settings, $pepper) = @_;
@@ -58,10 +59,10 @@ sub hmac_bcrypt_hash {
 ##
 # Compares password to stored hash value
 #
-# @param password   scalar containing plaintext password
-# @param valid      scalar containing stored hash value
-# @param pepper     scalar containing pepper string or undef
-# @returns          boolean
+# @param scalar password    plaintext password
+# @param scalar valid       stored hash value for comparison
+# @param scalar pepper      optional pepper string
+# @returns boolean
 ##
 sub hmac_bcrypt_verify {
     my ($password, $valid, $pepper) = @_;

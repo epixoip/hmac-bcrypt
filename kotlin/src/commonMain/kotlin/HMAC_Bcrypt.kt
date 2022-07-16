@@ -11,9 +11,9 @@ const val BCRYPT_PEPPER     = "hmac_bcrypt"
  * Generates a new hash from a plaintext password
  *
  * @param password  string containing plaintext password
- * @param settings  string containing settings string or null
- * @param pepper    string containing pepper string or null
- * @returns         hashed password
+ * @param settings  optional settings string (id + cost + salt)
+ * @param pepper    optional pepper string
+ * @returns         final hashed value
  */
 expect fun hmac_bcrypt_hash(
     password : String,
@@ -26,7 +26,7 @@ expect fun hmac_bcrypt_hash(
  *
  * @param password   string containing plaintext password
  * @param valid      string containing stored hash value
- * @param pepper     scalar containing pepper string or undef
+ * @param pepper     optional pepper string
  * @returns          boolean
  */
 expect fun hmac_bcrypt_verify(
