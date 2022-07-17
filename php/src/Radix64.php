@@ -5,7 +5,8 @@
 
 class Radix64
 {
-    private static $itoa64 = './ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const itoa64 = './ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const BCRYPT_SALT_BYTES = 16;
 
     public static function encode(string $input) : string {
         $output = '';
@@ -13,23 +14,23 @@ class Radix64
 
         do {
             $c1 = ord($input[$i++]);
-            $output .= self::$itoa64[$c1 >> 2];
+            $output .= self::itoa64[$c1 >> 2];
             $c1 = ($c1 & 0x03) << 4;
 
-            if ($i >= 16) {
-                $output .= self::$itoa64[$c1];
+            if ($i >= self::BCRYPT_SALT_BYTES) {
+                $output .= self::itoa64[$c1];
                 break;
             }
 
             $c2 = ord($input[$i++]);
             $c1 |= $c2 >> 4;
-            $output .= self::$itoa64[$c1];
+            $output .= self::itoa64[$c1];
             $c1 = ($c2 & 0x0f) << 2;
 
             $c2 = ord($input[$i++]);
             $c1 |= $c2 >> 6;
-            $output .= self::$itoa64[$c1];
-            $output .= self::$itoa64[$c2 & 0x3f];
+            $output .= self::itoa64[$c1];
+            $output .= self::itoa64[$c2 & 0x3f];
         } while (1);
 
         return $output;
