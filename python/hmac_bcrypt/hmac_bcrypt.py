@@ -6,12 +6,19 @@ from .radix64 import Radix64
 from base64   import b64encode
 from secrets  import token_bytes
 
-
 BCRYPT_ID     = '2a'
 BCRYPT_COST   = 13
 BCRYPT_PEPPER = 'hmac_bcrypt'
 
 
+##
+# Generates a new hash from a plaintext password
+#
+# @param string password    plaintext password
+# @param string settings    optional settings string (id + cost + salt)
+# @param string pepper      optional pepper string
+# @return string            final hashed value
+##
 def hmac_bcrypt_hash(password: str, settings: str, pepper=BCRYPT_PEPPER) -> str:
     cost = BCRYPT_COST
     salt = ''
@@ -32,7 +39,7 @@ def hmac_bcrypt_hash(password: str, settings: str, pepper=BCRYPT_PEPPER) -> str:
 
     pre_hash = b64encode(
         hmac.new(
-            bytes(pepper,   encoding='utf-8'),
+            bytes(pepper, encoding='utf-8'),
             bytes(password, encoding='utf-8'),
             hashlib.sha512
         ).digest()
@@ -54,6 +61,14 @@ def hmac_bcrypt_hash(password: str, settings: str, pepper=BCRYPT_PEPPER) -> str:
     return settings + post_hash
 
 
+##
+# Compares password to stored hash value
+#
+# @param string password    plaintext password
+# @param string valid       stored hash value for comparison
+# @param string pepper      optional pepper string
+# @returns bool
+##
 def hmac_bcrypt_verify(password: str, expected: str, pepper=BCRYPT_PEPPER) -> bool:
     return hmac.compare_digest(
         hmac_bcrypt_hash(password, expected, pepper),
