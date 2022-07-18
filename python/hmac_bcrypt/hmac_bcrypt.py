@@ -2,9 +2,7 @@ import bcrypt
 import hashlib
 import hmac
 
-from .radix64 import Radix64
-from base64   import b64encode
-from secrets  import token_bytes
+from base64 import b64encode
 
 BCRYPT_ID     = '2a'
 BCRYPT_COST   = 13
@@ -31,15 +29,13 @@ def hmac_bcrypt_hash(password: str, settings: str, pepper=BCRYPT_PEPPER) -> str:
         cost = BCRYPT_COST
 
     if not salt:
-        salt = Radix64.encode(
-            token_bytes(Radix64.BCRYPT_SALT_BYTES)
-        )
+        salt = bcrypt.gensalt(cost)
 
     settings = f"${BCRYPT_ID}${cost}${salt}"
 
     pre_hash = b64encode(
         hmac.new(
-            bytes(pepper, encoding='utf-8'),
+            bytes(pepper,   encoding='utf-8'),
             bytes(password, encoding='utf-8'),
             hashlib.sha512
         ).digest()
