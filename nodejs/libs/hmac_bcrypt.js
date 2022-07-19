@@ -13,7 +13,7 @@ const BCRYPT_PEPPER = "hmac_bcrypt"
  * @param  {string} pepper   optional pepper string
  * @return {string}          final hashed value
  */
-export function hmac_bcrypt_hash(password, settings, pepper) {
+export function hmac_bcrypt_hash(password, settings, pepper = BCRYPT_PEPPER) {
     let cost = BCRYPT_COST
     let salt = ""
 
@@ -30,10 +30,6 @@ export function hmac_bcrypt_hash(password, settings, pepper) {
     } else {
         salt = salt.substr(0, 22)
         settings = `\$2${BCRYPT_ID}\$${cost}\$${salt}`
-    }
-
-    if (!pepper) {
-        pepper = BCRYPT_PEPPER
     }
 
     let pre_hash = crypto.createHmac("sha512", pepper)
