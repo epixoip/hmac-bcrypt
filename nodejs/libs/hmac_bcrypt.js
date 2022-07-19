@@ -5,6 +5,14 @@ const BCRYPT_ID     = "a"
 const BCRYPT_COST   = 13
 const BCRYPT_PEPPER = "hmac_bcrypt"
 
+/**
+ * Generates a new hash from a plaintext password
+ *
+ * @param  {string} password plaintext password
+ * @param  {string} settings optional settings string (id + cost + salt)
+ * @param  {string} pepper   optional pepper string
+ * @return {string}          final hashed value
+ */
 export function hmac_bcrypt_hash(password, settings, pepper) {
     let cost = BCRYPT_COST
     let salt = ""
@@ -42,13 +50,21 @@ export function hmac_bcrypt_hash(password, settings, pepper) {
     return settings + post_hash
 }
 
-export function hmac_bcrypt_verify(password, expected, pepper) {
+/**
+ * Compares password to stored hash value
+ *
+ * @param {string} password  plaintext password
+ * @param {string} valid     stored hash value for comparison
+ * @param {string} pepper    optional pepper string
+ * @returns boolean
+ */
+export function hmac_bcrypt_verify(password, valid, pepper) {
     try {
         return crypto.timingSafeEqual(
             Buffer.from(
-                hmac_bcrypt_hash(password, expected, pepper)
+                hmac_bcrypt_hash(password, valid, pepper)
             ),
-            Buffer.from(expected)
+            Buffer.from(valid)
         )
     } catch {
         return false
