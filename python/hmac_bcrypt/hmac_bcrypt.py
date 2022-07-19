@@ -23,15 +23,15 @@ def hmac_bcrypt_hash(password: str, settings: str, pepper=BCRYPT_PEPPER) -> str:
 
     if settings:
         (_, _, cost, salt) = settings.split('$')
-        salt = salt[0:22]
 
     if not cost:
         cost = BCRYPT_COST
 
     if not salt:
         salt = bcrypt.gensalt(cost)
-
-    settings = f"${BCRYPT_ID}${cost}${salt}"
+    else:
+        salt = salt[0:22]
+        settings = f"${BCRYPT_ID}${cost}${salt}"
 
     pre_hash = b64encode(
         hmac.new(
