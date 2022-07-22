@@ -1,5 +1,5 @@
 import assert from "assert"
-import { hmac_bcrypt_hash, hmac_bcrypt_verify} from "../libs/hmac_bcrypt.js"
+import { hmac_bcrypt_hash, hmac_bcrypt_verify } from "../libs/hmac_bcrypt.js"
 
 describe('hmac-bcrypt', function () {
     describe('supply password only', function () {
