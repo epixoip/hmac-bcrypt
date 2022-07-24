@@ -1,7 +1,6 @@
-@file:JvmName("HMAC_Bcrypt")
-package HMAC_Bcrypt
+@file:JvmName("Actual")
 
-import HMAC_Bcrypt.Radix64.radix64_decode
+import Radix64.radix64_decode
 import at.favre.lib.crypto.bcrypt.BCrypt
 import at.favre.lib.crypto.bcrypt.LongPasswordStrategies
 import javax.crypto.Mac

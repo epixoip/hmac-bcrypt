@@ -1,5 +1,3 @@
-package HMAC_Bcrypt
-
 object Main {
     @JvmStatic
     fun main(args: Array<String>) {

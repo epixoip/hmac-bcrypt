@@ -1,5 +1,3 @@
-package HMAC_Bcrypt
-
 object Radix64 {
     private val index64 = byteArrayOf(
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -26,17 +24,17 @@ object Radix64 {
     }
 
     fun radix64_decode(encoded: String, maxLen: Int) : ByteArray {
-        val rs = StringBuilder()
         val slen = encoded.length
 
-        var off = 0
+        var out  = String()
+        var off  = 0
         var olen = 0
 
-        var c1: Byte
-        var c2: Byte
-        var c3: Byte
-        var c4: Byte
-        var o: Byte
+        var c1 : Byte
+        var c2 : Byte
+        var c3 : Byte
+        var c4 : Byte
+        var o  : Byte
 
         while (off < slen - 1 && olen < maxLen) {
             c1 = char64(encoded[off++])
@@ -48,7 +46,7 @@ object Radix64 {
 
             o = (c1.toInt() shl 2).toByte()
             o = (o.toInt() or (c2.toInt() and 0x30 shr 4)).toByte()
-            rs.append(Char(o.toUShort()))
+            out += Char(o.toUShort())
 
             if (++olen >= maxLen || off >= slen) {
                 break
@@ -62,7 +60,7 @@ object Radix64 {
 
             o = (c2.toInt() and 0x0f shl 4).toByte()
             o = (o.toInt() or (c3.toInt() and 0x3c shr 2)).toByte()
-            rs.append(Char(o.toUShort()))
+            out += Char(o.toUShort())
 
             if (++olen >= maxLen || off >= slen) {
                 break
@@ -71,8 +69,7 @@ object Radix64 {
             c4 = char64(encoded[off++])
             o = (c3.toInt() and 0x03 shl 6).toByte()
             o = (o.toInt() or c4.toInt()).toByte()
-            rs.append(Char(o.toUShort()))
-
+            out += Char(o.toUShort())
             ++olen
         }
 
@@ -80,7 +77,7 @@ object Radix64 {
         off = 0
 
         while (off < olen) {
-            ret[off] = rs[off].code.toByte()
+            ret[off] = out[off].code.toByte()
             off++
         }
 
