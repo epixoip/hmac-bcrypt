@@ -28,8 +28,7 @@ export function hmac_bcrypt_hash(password, settings, pepper = BCRYPT_PEPPER) {
     if (!salt) {
         settings = bcrypt.genSaltSync(parseInt(cost), BCRYPT_ID)
     } else {
-        salt = salt.substring(0, 22)
-        settings = `\$2${BCRYPT_ID}\$${cost}\$${salt}`
+        settings = settings.substring(0, 29)
     }
 
     let pre_hash = crypto.createHmac("sha512", pepper)
