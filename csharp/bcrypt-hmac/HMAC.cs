@@ -26,19 +26,20 @@ namespace bcrypt_hmac
 
             if (sets != null && sets.Length > 0)
             {
+                
                 id = sets[1];
                 cost = sets[2];
 
-                if (sets.Length > 3)
+                if (sets.Length > 3 && !string.IsNullOrEmpty(sets[3]))
                     salt = sets[3][..22];
                 else
-                    salt = BCrypt.Net.BCrypt.GenerateSalt();
+                    salt = BCrypt.Net.BCrypt.GenerateSalt().Split("$")[3];
             }
             else
             {
                 id = BCRYPT_ID;
                 cost = BCRYPT_COST.ToString();
-                salt = BCrypt.Net.BCrypt.GenerateSalt();
+                salt = BCrypt.Net.BCrypt.GenerateSalt().Split("$")[3];
             }
 
             string cryptAmble = "$" + id + "$" + cost + "$" + salt;
