@@ -3,6 +3,7 @@ build/
 gradle/
 .gradle/
 obj/
+bin/
 *.iml
 *~
 *.swp
