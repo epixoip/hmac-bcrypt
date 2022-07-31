@@ -45,13 +45,13 @@ namespace hmac_bcrypt
 
             string mid_hash = BCrypt.Net.BCrypt.HashPassword(pre_hash, settings);
 
-            string final = Convert.ToBase64String(
+            string post_hash = Convert.ToBase64String(
                 hmac.ComputeHash(
                     Encoding.UTF8.GetBytes(mid_hash)
                 )
             ).Replace("=", string.Empty);
 
-            return settings + final;
+            return settings + post_hash;
         }
 
         public static bool hmac_bcrypt_verify(string password, string valid, string? pepper = null)
