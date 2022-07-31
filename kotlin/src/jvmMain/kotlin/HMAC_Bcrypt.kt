@@ -47,7 +47,7 @@ actual fun hmac_bcrypt_hash(password: String, settings: String?, pepper: String?
         }
     }
 
-    val postHash = Mac.getInstance(HMAC_SHA512).let { hmac->
+    val postHash = Mac.getInstance(HMAC_SHA512).let { hmac ->
         hmac.init(
             SecretKeySpec(pepper?.toByteArray(), hmac.algorithm)
         )
