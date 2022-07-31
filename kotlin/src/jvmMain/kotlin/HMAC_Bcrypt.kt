@@ -10,16 +10,16 @@ actual fun hmac_bcrypt_hash(password: String, settings: String?, pepper: String?
     var cost = BCRYPT_COST
     var salt : ByteArray? = null
 
-    if (settings != null) {
-        val expandSettings = settings.split('$')
+    if (settings?.isNotBlank() == true) {
+        val setting = settings.split('$')
 
-        if (expandSettings.size > 1) {
-            cost = expandSettings[2].toInt()
+        if (2 in setting.indices && setting[2].isNotBlank()) {
+            cost = setting[2].toInt()
         }
 
-        if (expandSettings.size > 2) {
+        if (3 in setting.indices && setting[3].isNotBlank()) {
             salt = radix64_decode(
-                expandSettings[3].substring(0..21),
+                setting[3].substring(0..21),
                 BCRYPT_SALT_BYTES
             )
         }
@@ -47,7 +47,7 @@ actual fun hmac_bcrypt_hash(password: String, settings: String?, pepper: String?
         }
     }
 
-    val postHash = Mac.getInstance(HMAC_SHA512).let { hmac ->
+    val postHash = Mac.getInstance(HMAC_SHA512).let { hmac->
         hmac.init(
             SecretKeySpec(pepper?.toByteArray(), hmac.algorithm)
         )
@@ -56,17 +56,10 @@ actual fun hmac_bcrypt_hash(password: String, settings: String?, pepper: String?
             .toBase64()
     }
 
-    val strSalt =
-        String(midHash)
-            .substringBeforeLast('$') +
-        '$' +
-        String(midHash)
-            .substringAfterLast('$')
-            .substring(0, 22)
-
-    return "${strSalt}${postHash}"
+    return String(midHash).substring(0, 29) + postHash
 }
 
 actual fun hmac_bcrypt_verify(password: String, valid: String, pepper: String?) : Boolean {
-    return hmac_bcrypt_hash(password, valid, pepper).isEqual(valid)
+    return hmac_bcrypt_hash(password, valid, pepper)
+        .secureEquals(valid)
 }

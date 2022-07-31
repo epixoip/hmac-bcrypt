@@ -23,5 +23,11 @@ kotlin {
                 implementation("at.favre.lib:bcrypt:0.9.0")
             }
         }
+
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
     }
 }

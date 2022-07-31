@@ -81,12 +81,8 @@ fun ByteArray.toBase64(): String {
 /**
  * Constant-time string comparison
  */
-fun String.isEqual(other: String) : Boolean {
-    if (this.length != other.length) {
-        return false
-    }
-
-    var result = 0
+fun String.secureEquals(other: String) : Boolean {
+    var result = this.length xor other.length
 
     this.toCharArray()
         .zip(other.toCharArray())
