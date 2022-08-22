@@ -6,8 +6,11 @@ This repository contains reference implementations of the `hmac-bcrypt` password
 
 Each reference implementation defines two procedural functions with the following pseudo-prototypes:
 
-`string hmac_bcrypt_hash(password, settings?, pepper?)`
-`boolean hmac_bcrypt_verify(password, expected, pepper?)`
+```
+string hmac_bcrypt_hash(password, settings?, pepper?)
+
+boolean hmac_bcrypt_verify(password, expected, pepper?)
+```
 
 Please refer to the test cases provided with each reference implementation for how to integrate and use these functions. 
 
