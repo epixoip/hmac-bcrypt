@@ -34,7 +34,7 @@ return settings + post_hash
 
 Pre-hashing is employed to enable input lengths greater than bcrypt's maximum of 72 input bytes. SHA-512 was selected due to its 64-bit word size, which is friendly to CPU defenders but hinders GPU attackers. However, a raw SHA-512 value cannot be used for several reasons:
 
-1. Raw, unsatled hash values input into bcrypt can enable [shucking attacks]( https://superuser.com/questions/1561434/how-do-i-crack-a-double-encrypted-hash/1561612#1561612 ).
+1. Raw, unsalted hash values input into bcrypt can enable [shucking attacks]( https://superuser.com/questions/1561434/how-do-i-crack-a-double-encrypted-hash/1561612#1561612 ).
 2. Some bcrypt implementations treat input as a null-terminated cstring, resulting in truncated input for hash values containing null bytes.
 3. Some bcrypt implementations treat input as a signed char and only use the lower 7 bits of each byte, making it inappropriate for binary inputs.
 
