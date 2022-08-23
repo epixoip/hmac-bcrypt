@@ -22,7 +22,7 @@ The `pepper` parameter defines a global shared secret and is likewise optional; 
 
 ## Algorithm details
 
-The `hmac-bcrypt` password hashing function employs bcrypt with proper pre-hashing and post-hashing, combined with an optional pepper. In pseduo code, this is fairly straight-forward:
+The `hmac-bcrypt` password hashing function employs bcrypt with proper pre-hashing and post-hashing, combined with an optional pepper. In pseudo code, this is fairly straight-forward:
 
 ```
 pre_hash  = hmac_sha512_base64(password, pepper)
