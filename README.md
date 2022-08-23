@@ -35,9 +35,12 @@ return settings + post_hash
 Pre-hashing is employed to enable input lengths greater than bcrypt's maximum of 72 input bytes. SHA-512 was selected due to its 64-bit word size, which is friendly to CPU defenders but hinders GPU attackers. However, a raw SHA-512 value cannot be used for several reasons:
 
 1. Raw, unsatled hash values input into bcrypt can enable [shucking attacks]( https://superuser.com/questions/1561434/how-do-i-crack-a-double-encrypted-hash/1561612#1561612 ).
-2. Some bcrypt implementations treat input as a null-terminated cstring, resulting in truncated input for hash values containing null bytes. 
+2. Some bcrypt implementations treat input as a null-terminated cstring, resulting in truncated input for hash values containing null bytes.
+3. Some bcrypt implementations treat input as a signed char and only use the lower 7 bits of each byte, making it inappropriate for binary inputs.
 
-To mitigate shucking attacks, the pre-hash has to be salted -- or in this case, peppered -- and HMAC provides a convenient vehicle for keying a hash. The resulting HMAC value is then encoded with base64 to mitigate null byte issues. 
+To mitigate shucking attacks, the pre-hash has to be salted -- or in this case, peppered -- and HMAC provides a convenient vehicle for keying a hash. The resulting HMAC value is then encoded with base64 to produce clean, lower-ASCII input that mitigates issues with null bytes and binary data. 
+
+The keen reader will note that hmac_sha512_base64 produces 88 bytes of data, while bcrypt has a maximum input size of 72 bytes. This is not an issue, and in fact is preferred over utilizing a hash algorithm that produces less input data such as sha256. We want to fill all 72 bytes, and no security is lost when truncating sha512 to 432 bits (this is greater than the 384 bits that sha384 provides.)
 
 Post-hashing is employed largely to differentiate hmac-bcrypt hashes from bcrypt hashes -- i.e., the lengths will differ -- but also to add an extra layer of protection due to the pepper. The post-hashing step could even be performed with the pepper value stored in an HSM (highly recommended!) for further protection. 
 
