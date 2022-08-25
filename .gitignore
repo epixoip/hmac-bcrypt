@@ -10,3 +10,5 @@ bin/
 *.swp
 __pycache__
 node_modules
+zig-cache
+zig-out
